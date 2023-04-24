@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,13 +22,20 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.aliensmasher.ui.theme.AlienSmasherTheme
 import com.example.aliensmasher.ui.theme.component.ThreeDimensionalLayout
 import com.example.aliensmasher.utils.Resource
@@ -34,6 +44,7 @@ import com.example.aliensmasher.viewModel.AlienViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -46,9 +57,18 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    mMediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.sound_killer)
-                    mMediaPlayer?.start()
-                    BottomDialog(viewModel)
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = Screens.Splash) {
+                        composable(route = Screens.Splash) {
+                            SplashScreen(navController = navController)
+                        }
+
+                        composable(route = Screens.Dashboard) {
+                            mMediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.sound_killer)
+                            mMediaPlayer?.start()
+                            BottomDialog(viewModel)
+                        }
+                    }
                 }
             }
         }
@@ -315,6 +335,54 @@ fun BottomDialog(viewModel: AlienViewModel) {
 
 
     }
+}
+
+@Composable
+fun SplashScreen(navController: NavController) = Box(
+    Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+) {
+
+    val scale = remember {
+        androidx.compose.animation.core.Animatable(0.0f)
+    }
+
+    LaunchedEffect(key1 = true) {
+        scale.animateTo(
+            targetValue = 0.7f,
+            animationSpec = tween(800, easing = {
+                OvershootInterpolator(4f).getInterpolation(it)
+            })
+        )
+        delay(1000)
+        navController.navigate(Screens.Dashboard) {
+            popUpTo(Screens.Splash) {
+                inclusive = true
+            }
+        }
+    }
+
+    Image(
+        painter = painterResource(id = R.drawable.alien),
+        contentDescription = "",
+        alignment = Alignment.Center, modifier = Modifier
+            .fillMaxSize().padding(40.dp)
+            .scale(scale.value)
+    )
+
+    Text(
+        text = "Version - ${BuildConfig.VERSION_NAME}",
+        textAlign = TextAlign.Center,
+        fontSize = 24.sp,
+        modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)
+    )
+}
+
+
+object Screens {
+    const val Splash = "Splash"
+    const val Dashboard = "Dashboard"
 }
 
 

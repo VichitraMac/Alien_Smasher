@@ -85,4 +85,7 @@ dependencies {
 
     implementation "com.github.skydoves:landscapist-glide:2.1.10"
 
+     // Used for navigation
+    implementation "androidx.navigation:navigation-compose:2.6.0-alpha02"
+
 }
