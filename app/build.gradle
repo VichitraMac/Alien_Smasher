@@ -1,7 +1,7 @@
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     signingConfigs {
@@ -85,7 +85,16 @@ dependencies {
 
     implementation "com.github.skydoves:landscapist-glide:2.1.10"
 
-     // Used for navigation
+    // Used for navigation
     implementation "androidx.navigation:navigation-compose:2.6.0-alpha02"
+
+    // firebase core
+    implementation 'com.google.firebase:firebase-core:17.4.4'
+
+    // firebase  Analytics
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
 
 }

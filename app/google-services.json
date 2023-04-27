@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "718938863321",
+    "project_id": "alien-smasher-75601",
+    "storage_bucket": "alien-smasher-75601.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718938863321:android:b2900d3df65159e5bb70c8",
+        "android_client_info": {
+          "package_name": "com.example.aliensmasher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718938863321-dghvi2lq3hu0opf6hai6c2s79o8oa8os.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBikHGrXApRvM4ZNoDnMMiYkku3tCUcPdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718938863321-dghvi2lq3hu0opf6hai6c2s79o8oa8os.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
