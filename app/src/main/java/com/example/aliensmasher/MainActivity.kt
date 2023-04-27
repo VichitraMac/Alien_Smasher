@@ -50,6 +50,8 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<AlienViewModel>()
     var mMediaPlayer: MediaPlayer? = null
+    var mediaState = false
+    var isFirstTime = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -74,10 +76,35 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        handleMediaPlayerStateChange()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handleMediaPlayerStateChange()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mMediaPlayer?.release()
         mMediaPlayer?.stop()
+    }
+
+
+    private fun handleMediaPlayerStateChange(){
+        if (!isFirstTime){
+            mediaState = if (mediaState){
+                mMediaPlayer?.start()
+                false
+            }else{
+                mMediaPlayer?.pause()
+                true
+            }
+        }else{
+            isFirstTime = false
+        }
     }
 }
 
@@ -367,7 +394,8 @@ fun SplashScreen(navController: NavController) = Box(
         painter = painterResource(id = R.drawable.alien),
         contentDescription = "",
         alignment = Alignment.Center, modifier = Modifier
-            .fillMaxSize().padding(40.dp)
+            .fillMaxSize()
+            .padding(40.dp)
             .scale(scale.value)
     )
 
@@ -375,7 +403,9 @@ fun SplashScreen(navController: NavController) = Box(
         text = "Version - ${BuildConfig.VERSION_NAME}",
         textAlign = TextAlign.Center,
         fontSize = 24.sp,
-        modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(16.dp)
     )
 }
 
