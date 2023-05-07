@@ -1,5 +1,6 @@
 package com.example.aliensmasher.activity.HomeScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,11 +18,14 @@ import androidx.navigation.NavController
 import com.example.aliensmasher.R
 import com.example.aliensmasher.ui.theme.component.ThreeDimensionalLayout
 import com.example.aliensmasher.utils.Screens
+import com.example.aliensmasher.viewModel.AlienViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun HomeScreen(navController: NavController, onClickMusic: () -> Unit) = Surface(
+fun HomeScreen(viewModel: AlienViewModel, navController: NavController, onClickMusic: () -> Unit) = Surface(
     Modifier.fillMaxSize(),
 ) {
+    var icon = viewModel.musicIconState
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -33,7 +37,7 @@ fun HomeScreen(navController: NavController, onClickMusic: () -> Unit) = Surface
         ) {
             ThreeDimensionalLayout(content = {
                 Image(
-                    painter = painterResource(id = R.drawable.icon_music),
+                    painter = painterResource(id = icon.value),
                     contentDescription = " Music icon",
                     Modifier
                         .background(Color.LightGray)

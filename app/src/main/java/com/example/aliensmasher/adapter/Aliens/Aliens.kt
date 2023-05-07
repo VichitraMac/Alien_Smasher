@@ -1,5 +1,6 @@
 package com.example.aliensmasher.adapter.Aliens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,16 +26,19 @@ import com.example.aliensmasher.viewModel.AlienViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun Aliens(
     modifier: Modifier = Modifier.padding(5.dp), viewModel: AlienViewModel, onClickMusic: () -> Unit
 ) {
     var count = remember {
-        0
+        1
     }
-    var image = remember {
+    /*var image = remember {
         mutableStateOf(R.drawable.icon_music)
-    }
+    }*/
+    var icon = viewModel.musicIconState
+
     val aliens by viewModel.aliens.collectAsState()
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
@@ -53,7 +58,7 @@ fun Aliens(
                 ) {
                     ThreeDimensionalLayout(content = {
                         Image(
-                            painter = painterResource(id = image.value),
+                            painter = painterResource(id = icon.value),
                             contentDescription = " Music icon",
                             Modifier
                                 .background(Color.LightGray)
@@ -61,13 +66,6 @@ fun Aliens(
                                 .clip(RoundedCornerShape(10.dp))
                         )
                     }, onClick = {
-                        if (count == 2){
-                            count = 0
-                            image.value = R.drawable.icon_stop_music
-                        }else{
-                            count++
-                            image.value = R.drawable.icon_music
-                        }
                         onClickMusic()
                     }, edgeOffset = 5.dp)
                 }

@@ -3,9 +3,12 @@ package com.example.aliensmasher.viewModel
 
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aliensmasher.R
 import com.example.aliensmasher.models.AlienModel
 import com.example.aliensmasher.utils.Resource
 import com.example.aliensmasher.utils.Status
@@ -21,6 +24,7 @@ class AlienViewModel : ViewModel() {
     var timerMutableLiveDate = MutableLiveData<Resource<String>>()
     var aliens = MutableStateFlow(prepareAlienList(itemCount))
     var score: Int = 0
+    var musicIconState = MutableStateFlow(R.drawable.icon_music)
     val columnSize by lazy {
         sqrt(16.0).roundToInt()
     }
@@ -75,9 +79,9 @@ class AlienViewModel : ViewModel() {
     fun getResult(): String {
        return if (score == itemCount) {
             "Won"
-        } else {
+       } else {
             "lose"
-        }
+       }
     }
 
     fun restart() {
@@ -96,6 +100,11 @@ class AlienViewModel : ViewModel() {
 
         return "${if (minutes < 10) "0" else ""}$minutes:" +
                 "${if (seconds < 10) "0" else ""}$seconds"
+    }
+
+
+    fun changeMusicIcon(icon: Int){
+        musicIconState.value = icon
     }
 }
 
