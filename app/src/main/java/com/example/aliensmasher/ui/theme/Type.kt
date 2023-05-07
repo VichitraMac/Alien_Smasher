@@ -4,13 +4,14 @@ import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.aliensmasher.R
 
 // Set of Material typography styles to start with
 val customFont = FontFamily(
-    Font(R.font.josefinsans_bold)
+    Font(R.font.gloria_hallelujah_regular)
 )
 val Typography = Typography(
     body1 = TextStyle(
@@ -20,8 +21,15 @@ val Typography = Typography(
     ),
     body2 = TextStyle(
         fontFamily = customFont,
-        fontSize = 16.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+    ),
+    h1 = TextStyle(
+        fontFamily = customFont,
+        fontWeight = FontWeight.Medium,
+        fontSize = 60.sp,
     )
+
 
     /* Other default text styles to override
     button = TextStyle(
