@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 
-public sealed class Perspective(
+sealed class Perspective(
 ) {
     data class Left(
         val bottomEdgeColor: Color, val rightEdgeColor: Color
