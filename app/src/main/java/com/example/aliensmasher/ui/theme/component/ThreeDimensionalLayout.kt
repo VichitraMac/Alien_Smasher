@@ -23,8 +23,9 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 
-sealed class Perspective(
+public sealed class Perspective(
 ) {
     data class Left(
         val bottomEdgeColor: Color, val rightEdgeColor: Color
@@ -44,7 +45,7 @@ sealed class Perspective(
 @Composable
 fun ThreeDimensionalLayout(
     perspective: Perspective = Perspective.Left(
-        bottomEdgeColor = Color.Black, rightEdgeColor = Color.Black
+        bottomEdgeColor = Color("#5C221F".toColorInt()), rightEdgeColor = Color("#A03933".toColorInt())
     ), edgeOffset: Dp = 12.dp, content: @Composable () -> Unit, onClick: () -> Unit
 ) {
     val interactionSource = remember {

@@ -111,7 +111,7 @@ fun TwoBottomButton2D(
                 Text(
                     text = "Retry",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.h2,
                     color = Color.Black,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -135,7 +135,7 @@ fun TwoBottomButton2D(
                 Text(
                     text = "Home",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.h2,
                     color = Color.Black,
                     modifier = Modifier
                         .fillMaxWidth()

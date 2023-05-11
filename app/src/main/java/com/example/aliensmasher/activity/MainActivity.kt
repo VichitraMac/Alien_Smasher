@@ -109,12 +109,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     AlienSmasherTheme {
         val navController = rememberNavController()
-        HomeScreen(viewModel = AlienViewModel(), navController = navController) {}
+        HomeScreen(AlienViewModel(),navController){
+
+        }
     }
 }
 
@@ -146,7 +148,7 @@ fun BottomDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "You ${result.value}", style = MaterialTheme.typography.body2
+                    text = "You ${result.value}", style = MaterialTheme.typography.h2
                 )
                 TwoBottomButton2D(
                     sheetState = sheetState,

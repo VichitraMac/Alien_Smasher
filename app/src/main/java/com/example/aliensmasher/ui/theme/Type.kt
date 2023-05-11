@@ -21,13 +21,18 @@ val Typography = Typography(
     ),
     body2 = TextStyle(
         fontFamily = customFont,
-        fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
+        fontWeight = FontWeight.Medium,
+        fontSize = 55.sp,
     ),
     h1 = TextStyle(
         fontFamily = customFont,
         fontWeight = FontWeight.Medium,
         fontSize = 60.sp,
+    ),
+    h2 =  TextStyle(
+        fontFamily = customFont,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
     )
 
 
