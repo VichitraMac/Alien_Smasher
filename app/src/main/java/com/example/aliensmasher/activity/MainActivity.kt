@@ -2,22 +2,30 @@ package com.example.aliensmasher.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,9 +35,12 @@ import com.example.aliensmasher.activity.GameScreen.GameScreen
 import com.example.aliensmasher.activity.HomeScreen.HomeScreen
 import com.example.aliensmasher.activity.SplashScreen.SplashScreen
 import com.example.aliensmasher.ui.theme.AlienSmasherTheme
+import com.example.aliensmasher.ui.theme.component.Perspective
+import com.example.aliensmasher.ui.theme.component.ThreeDimensionalLayout
 import com.example.aliensmasher.utils.Screens
-import com.example.aliensmasher.utils.TwoBottomButton2D
 import com.example.aliensmasher.viewModel.AlienViewModel
+import kotlinx.coroutines.launch
+
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<AlienViewModel>()
     var mMediaPlayer: MediaPlayer? = null
@@ -51,7 +62,7 @@ class MainActivity : ComponentActivity() {
                             SplashScreen(navController = navController)
                         }
                         composable(route = Screens.Home) {
-                            HomeScreen(viewModel,navController = navController) {
+                            HomeScreen(viewModel, navController = navController) {
                                 handleNextSong()
                             }
                         }
@@ -101,7 +112,7 @@ class MainActivity : ComponentActivity() {
         if (index < audioResourceId.size) index++;
         else index = 0;
         mMediaPlayer = MediaPlayer.create(context, audioResourceId[index])
-        mMediaPlayer?.start()
+        //mMediaPlayer?.start()
         mMediaPlayer?.setOnCompletionListener {
             mMediaPlayer = MediaPlayer.create(context, audioResourceId[index])
             mMediaPlayer?.start()
@@ -114,7 +125,7 @@ class MainActivity : ComponentActivity() {
 fun DefaultPreview() {
     AlienSmasherTheme {
         val navController = rememberNavController()
-        HomeScreen(AlienViewModel(),navController){
+        BottomDialog(viewModel = AlienViewModel(), navController) {
 
         }
     }
@@ -129,9 +140,19 @@ fun BottomDialog(
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed
     )
+
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
+
+    val sheetStateUp = rememberBottomSheetState(
+        initialValue = BottomSheetValue.Collapsed
+    )
+
+    val scaffoldStateUp = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetStateUp
+    )
+
     var result = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     BottomSheetScaffold(
@@ -140,22 +161,190 @@ fun BottomDialog(
         sheetContent = {
             Column(
                 modifier = Modifier
-                    .height(300.dp)
                     .fillMaxSize()
-                    .background(color = Color.Gray)
-                    .padding(start = 10.dp, end = 20.dp, bottom = 12.dp, top = 12.dp),
+                    .background(Color.White),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "You ${result.value}", style = MaterialTheme.typography.h2
-                )
-                TwoBottomButton2D(
-                    sheetState = sheetState,
-                    viewModel = viewModel,
-                    scope = scope,
-                    navController = navController
-                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .background(Color.White)
+                ) {
+                    Text(
+                        text = "AD",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp)
+                            .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                            .padding(10.dp),
+                        style = MaterialTheme.typography.h4,
+                        color = Color.Black
+                    )
+
+                }
+                Column(modifier = Modifier.weight(1.2f)) {
+                    ConstraintLayout(Modifier.fillMaxSize()) {
+                        val (image, btnRetry, btnHome, text1, text2, bottomParent) = createRefs()
+                        val (ivForgee) = createRefs()
+                        Image(
+                            painter = painterResource(R.drawable.bottom_sheet_daily_bachground),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxSize(1f)
+                                .constrainAs(image) {},
+                            contentScale = ContentScale.FillBounds
+                        )
+                        val columnPadding = 10.dp
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(y = columnPadding)
+                            .constrainAs(text1) {
+                                top.linkTo(parent.top)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(btnRetry.top)
+                            }) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = "Round",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.h5,
+                                color = Color.White
+                            )
+                        }
+
+                        val columnPadding2 = 30.dp
+                        Box(contentAlignment = Alignment.BottomCenter,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .offset(y = -columnPadding2)
+                                .constrainAs(text2) {
+                                    top.linkTo(text1.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                }) {
+                            Text(
+                                text = "Lost!",
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.body2,
+                                color = Color.White
+                            )
+                        }
+
+                        Box(
+                            Modifier
+                                .padding(bottom = 20.dp)
+                                .constrainAs(ivForgee)
+                                {
+                                    start.linkTo(image.start)
+                                    bottom.linkTo(image.bottom)
+                                }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.forgee_action2),
+                                contentDescription = "",
+                                modifier = Modifier.size(160.dp)
+                            )
+                        }
+
+                        Box(
+                            Modifier
+                                .width(240.dp)
+                                .padding(bottom = 70.dp)
+                                .constrainAs(btnRetry) {
+                                    end.linkTo(image.end)
+                                    bottom.linkTo(image.bottom)
+                                }){
+                            Row{
+                                ThreeDimensionalLayout(Perspective.Left(Color("#8D6D05".toColorInt()), Color("#FEC005".toColorInt())),content = {
+                                    Text(
+                                        text = "Retry",
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.h5,
+                                        color = Color.White,
+                                        modifier = Modifier
+                                            .background(
+                                                Color("#FEC005".toColorInt()),
+                                                shape = RoundedCornerShape(2.dp)
+                                            )
+                                            .padding(
+                                                start = 45.dp,
+                                                end = 45.dp,
+                                                top = 6.dp,
+                                                bottom = 6.dp
+                                            ),
+                                    )
+                                }, onClick = {
+                                    scope.launch {
+                                        sheetState.collapse()
+                                        viewModel.restart()
+                                    }
+                                })
+                                ThreeDimensionalLayout(Perspective.Left(Color("#DAC387".toColorInt()), Color("#A29566".toColorInt())), content = {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.house_icon),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(52.dp)
+                                            .background(Color("#F5DD94".toColorInt()))
+                                            .padding(
+                                                start = 14.dp,
+                                                end = 14.dp,
+                                                bottom = 5.dp,
+                                                top = 5.dp
+                                            ))
+                                }, onClick = {
+                                    navController.navigate(Screens.Home) {
+                                        popUpTo(Screens.Dashboard) {
+                                            inclusive = true
+                                        }
+                                    }
+                                })
+                            }
+                        }
+//                        Box(Modifier.width(50.dp).padding(bottom = 30.dp, end = 15.dp).constrainAs(btnHome){
+//                            end.linkTo(image.end)
+//                            bottom.linkTo(image.bottom)
+//                        }){
+//
+//                        }
+
+                    }
+
+
+//                    Column(modifier = Modifier.weight(1f)) {
+//
+//                    }
+
+//                    Row(
+//                        Modifier
+//                            .weight(1f)
+//                            .fillMaxSize(), horizontalArrangement = Arrangement.End,
+//                        verticalAlignment = Alignment.CenterVertically) {
+//                        Column(Modifier.weight(1f)) {
+//
+//                        }
+//                        Row(Modifier
+//                                .weight(1.7f)
+//                                .fillMaxSize(), horizontalArrangement = Arrangement.Center,
+//                            verticalAlignment = Alignment.CenterVertically) {
+//
+//                        }
+//
+//                    }
+
+
+//                Text(
+//                    text = "You ${result.value}", style = MaterialTheme.typography.h2
+//                )
+                    /*TwoBottomButton2D(
+                        sheetState = sheetState,
+                        viewModel = viewModel,
+                        scope = scope,
+                        navController = navController
+                    )*/
+                }
             }
         },
         sheetBackgroundColor = Color.Green,

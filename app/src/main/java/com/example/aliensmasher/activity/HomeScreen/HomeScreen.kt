@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
@@ -102,7 +103,7 @@ fun HomeScreen(viewModel: AlienViewModel, navController: NavController, onClickM
 
             Box(
                 Modifier
-                    .padding(top = 30.dp)
+                    .padding(top = 50.dp)
                     .constrainAs(box6) {
                         top.linkTo(box3.bottom)
                         start.linkTo(parent.start)

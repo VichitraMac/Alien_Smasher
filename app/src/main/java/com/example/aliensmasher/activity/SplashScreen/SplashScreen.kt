@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.aliensmasher.R
 import com.example.aliensmasher.utils.Screens
@@ -54,16 +55,16 @@ fun SplashScreen(navController: NavController) = Column(
         Text(
             text = "Alien",
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.h1,
         )
     }
-    val columnPadding2 = 60.dp
+    val columnPadding2 = 20.dp
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
             .fillMaxWidth()
             .weight(1f)
-            .offset(y = columnPadding2)
+            .offset(y = -columnPadding2)
     ) {
         Text(
             text = "Smasher",

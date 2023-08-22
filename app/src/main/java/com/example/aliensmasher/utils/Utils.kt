@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -22,20 +24,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun Text(text: String) {
+fun CustomText(text: String, modifier: Modifier = Modifier
+    .background(Color.Black, shape = RoundedCornerShape(8.dp))
+    .padding(16.dp), fontSize: TextUnit = 16.sp,style: TextStyle = MaterialTheme.typography.body2) {
     Text(
-        fontSize = 18.sp,
+        fontSize = fontSize,
         text = (text),
-        modifier = Modifier
-            .background(Color.Black, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp),
-        style = MaterialTheme.typography.body2,
+        modifier = Modifier,
+        style = style,
         color = Color.White
     )
 }
 
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TwoBottomButton(
@@ -68,12 +70,12 @@ fun TwoBottomButton(
         )
 
         Text(text = "Score ${
-            if (viewModel.score == viewModel.itemCount) {
+            if (viewModel.score.value == viewModel.itemCount) {
                 result("Won")
                 scope.launch { state.expand() }
-                viewModel.score
+                viewModel.score.value
             } else {
-                viewModel.score
+                viewModel.score.value
             }
         }",
             textAlign = TextAlign.Center,
